@@ -7,20 +7,39 @@ public class CatMovement : MonoBehaviour
     [SerializeField] private float speedVertical;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float movementSmoothness;
+    [SerializeField] private float dashDuration;
+    [SerializeField] private float dashMultiplier;
+    [SerializeField] private float dashCooldown;
 
     private Vector3 smoothTargetMovement;
+    private bool canDash = true;
+    private float multiplier = 1;
 
     private void Update()
     {
-        float multiplier = 1;
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && canDash)
         {
-            multiplier = 3;
+            multiplier = dashMultiplier;
+            CancelInvoke(nameof(DisableDash));
+            CancelInvoke(nameof(EnableDash));
+            Invoke(nameof(DisableDash), dashDuration);
+            Invoke(nameof(EnableDash), dashCooldown);
         }
 
         Vector3 targetMovement = new Vector3(Input.GetAxis("Horizontal") * speedHorizontal * multiplier, 0, Input.GetAxis("Vertical") * speedVertical * multiplier);
         smoothTargetMovement = Vector3.Lerp(smoothTargetMovement, targetMovement, movementSmoothness * Time.deltaTime);
 
         characterController.Move(smoothTargetMovement * Time.deltaTime);
+    }
+
+    private void DisableDash()
+    {
+        multiplier = 1;
+        canDash = false;
+    }
+
+    private void EnableDash()
+    {
+        canDash = true;
     }
 }
