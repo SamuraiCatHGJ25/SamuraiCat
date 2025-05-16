@@ -12,7 +12,13 @@ public class CatMovement : MonoBehaviour
 
     private void Update()
     {
-        Vector3 targetMovement = new Vector3(Input.GetAxis("Horizontal") * speedHorizontal, 0, Input.GetAxis("Vertical") * speedVertical);
+        float multiplier = 1;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            multiplier = 3;
+        }
+
+        Vector3 targetMovement = new Vector3(Input.GetAxis("Horizontal") * speedHorizontal * multiplier, 0, Input.GetAxis("Vertical") * speedVertical * multiplier);
         smoothTargetMovement = Vector3.Lerp(smoothTargetMovement, targetMovement, movementSmoothness * Time.deltaTime);
 
         characterController.Move(smoothTargetMovement * Time.deltaTime);
