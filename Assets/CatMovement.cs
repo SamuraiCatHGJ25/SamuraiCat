@@ -19,6 +19,7 @@ public class CatMovement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) && canDash)
         {
+            canDash = false;
             multiplier = dashMultiplier;
             CancelInvoke(nameof(DisableDash));
             CancelInvoke(nameof(EnableDash));
@@ -35,7 +36,6 @@ public class CatMovement : MonoBehaviour
     private void DisableDash()
     {
         multiplier = 1;
-        canDash = false;
     }
 
     private void EnableDash()

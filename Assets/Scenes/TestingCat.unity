@@ -1038,8 +1038,8 @@ MonoBehaviour:
   speedVertical: 3
   rotationSpeed: 0
   movementSmoothness: 10
-  dashDuration: 0.75
-  dashMultiplier: 2
+  dashDuration: 0.2
+  dashMultiplier: 10
   dashCooldown: 3
 --- !u!143 &1680488698
 CharacterController:
