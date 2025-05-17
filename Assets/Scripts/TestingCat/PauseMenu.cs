@@ -28,8 +28,15 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void ForcePause()
+    {
+        Time.timeScale = 0f;
+        canvas.enabled = true;
+    }
+
     public void ReturnToMainMenu()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
 }

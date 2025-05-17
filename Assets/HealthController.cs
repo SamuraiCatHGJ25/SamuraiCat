@@ -41,7 +41,7 @@ public class HealthController : MonoBehaviour
 
         if (isGameOverCondition)
         {
-            GameOverCanvas.TogglePause();
+            GameOverCanvas.ForcePause();
         }
     }
 
