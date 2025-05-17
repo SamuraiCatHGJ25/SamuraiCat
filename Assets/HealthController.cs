@@ -1,19 +1,19 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
 {
-
-    // Fires on damage/heal, takes current health and +/- HP
-    public event Action<int, int> HealthChanged;
-
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject nonPlayerCharacter;
     [SerializeField] private int maxHealth;
     // Armor protects unit from damage, trading 1 unit of armor for 1 instance of damage
     [SerializeField] private int armor;
     [SerializeField] private int maxArmor;
     [SerializeField] private String anim_hurt;
     [SerializeField] private String anim_death;
-
+    
+    private Image healthBar;
     private int curHealth;
     private Boolean dead;
     
@@ -21,6 +21,10 @@ public class HealthController : MonoBehaviour
     void Start()
     {
         curHealth = maxHealth;
+        if (player != null)
+        {
+            healthBar = GameObject.Find("HPBarBackground").GetComponent<Image>();
+        }
     }
 
     // Update is called once per frame
@@ -43,6 +47,12 @@ public class HealthController : MonoBehaviour
         }
         
      curHealth -= damage;
+     
+     if (player != null)
+     {
+         UpdateHealthBar(healthBar);
+     }
+     
      if (curHealth <= 0)
      {
          die(anim_death);
@@ -55,6 +65,11 @@ public class HealthController : MonoBehaviour
         if (curHealth > maxHealth)
         {
             curHealth = maxHealth;
+        }
+
+        if (player != null)
+        {
+            UpdateHealthBar(healthBar);
         }
     }
 
@@ -75,5 +90,10 @@ public class HealthController : MonoBehaviour
             armor = 0;
         }
     }
-    
+
+    public void UpdateHealthBar(Image bar)
+    {
+        bar.fillAmount = curHealth / (float)maxHealth * 100;
+    }
+
 }
