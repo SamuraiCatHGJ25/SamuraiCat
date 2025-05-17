@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CatMovement : MonoBehaviour
 {
@@ -28,9 +29,21 @@ public class CatMovement : MonoBehaviour
         }
 
         Vector3 targetMovement = new Vector3(Input.GetAxis("Horizontal") * speedHorizontal * multiplier, 0, Input.GetAxis("Vertical") * speedVertical * multiplier);
+        Vector3 eulerTargetRotation = targetMovement.normalized;
+
         smoothTargetMovement = Vector3.Lerp(smoothTargetMovement, targetMovement, movementSmoothness * Time.deltaTime);
 
         characterController.Move(smoothTargetMovement * Time.deltaTime);
+
+        if (eulerTargetRotation != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(eulerTargetRotation);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+        }
     }
 
     private void DisableDash()
