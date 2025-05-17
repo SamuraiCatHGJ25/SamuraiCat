@@ -3,16 +3,30 @@ using UnityEngine;
 
 public class ArcherTower : MonoBehaviour
 {
-    [SerializeField] private float cooldown;
-    [SerializeField] private int damage;
-    [SerializeField] private float range;
+    [SerializeField] private int currentArcherTowerLevel;
+
+    [SerializeField] private float[] cooldown;
+    [SerializeField] private int[] damage;
+    [SerializeField] private float[] range;
+    [SerializeField] private GameObject[] archerTowerPrefabs;
     [SerializeField] private LayerMask enemyLayerMask;
     [SerializeField] private GameObject arrow;
     [SerializeField] private Vector3 offset;
 
+    [SerializeField] private bool upgrade = false;
+
     private void Start()
     {
-        InvokeRepeating(nameof(tryToShootEnemies), 0, cooldown);
+        ShootOne();
+    }
+
+    private void Update()
+    {
+        if(upgrade)
+        {
+            upgrade = false;
+            upgradeArcherTower();
+        }
     }
 
     private void tryToShootEnemies()
@@ -21,7 +35,7 @@ public class ArcherTower : MonoBehaviour
 
         if(enemy != null && enemy.GetComponent<EnemyHealthController>() != null)
         {
-            enemy.GetComponent<EnemyHealthController>().setDamage(damage);
+            enemy.GetComponent<EnemyHealthController>().setDamage(damage[currentArcherTowerLevel]);
             GameObject projectile = Instantiate(arrow, transform.position + offset, Quaternion.LookRotation(enemy.position - (transform.position + offset)).normalized);
         }
     }
@@ -29,7 +43,7 @@ public class ArcherTower : MonoBehaviour
     private Transform findNearestEnemy()
     {
         List<Transform> interactableList = new List<Transform>();
-        Collider[] colliders = Physics.OverlapSphere(transform.position, range, enemyLayerMask);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, range[currentArcherTowerLevel], enemyLayerMask);
         foreach (Collider collider in colliders)
         {
             if (collider.TryGetComponent(out Transform targetTransform))
@@ -50,5 +64,29 @@ public class ArcherTower : MonoBehaviour
             }
         }
         return closestTarget;
+    }
+
+    private void ShootOne()
+    {
+        tryToShootEnemies();
+        Invoke(nameof(ShootTwo), cooldown[currentArcherTowerLevel]);
+    }
+    private void ShootTwo()
+    {
+        tryToShootEnemies();
+        Invoke(nameof(ShootOne), cooldown[currentArcherTowerLevel]);
+    }
+
+    public void upgradeArcherTower()
+    {
+        currentArcherTowerLevel += 1;
+        archerTowerPrefabs[currentArcherTowerLevel - 1].SetActive(false);
+        archerTowerPrefabs[currentArcherTowerLevel].SetActive(true);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.darkGreen;
+        Gizmos.DrawWireSphere(transform.position, range[currentArcherTowerLevel]);
     }
 }
