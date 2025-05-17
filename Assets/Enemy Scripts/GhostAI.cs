@@ -51,7 +51,7 @@ public class GhostAI : MonoBehaviour
             if(closestTarget == null)
             {
                 closestTarget = target;
-             }
+            }
             else if(Vector3.Distance(transform.position, target.position) < Vector3.Distance(transform.position, closestTarget.position))
             {
                 closestTarget = target;
@@ -69,7 +69,7 @@ public class GhostAI : MonoBehaviour
     private void attackPlayer(Transform target)
     {
         ghostDamageEffect.Play();
-        //target.GetComponent<HealthController>().damage(damage);
+        target.GetComponent<HealthController>()?.damage(damage);
     }
 
     private void OnDrawGizmos()

@@ -93,7 +93,7 @@ public class HealthController : MonoBehaviour
 
     public void UpdateHealthBar(Image bar)
     {
-        bar.fillAmount = curHealth / (float)maxHealth * 100;
+        bar.fillAmount = curHealth / (float)maxHealth;
     }
 
 }
