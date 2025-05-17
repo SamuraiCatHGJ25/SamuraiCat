@@ -10,23 +10,43 @@ public class CatAttack : MonoBehaviour
     [SerializeField] private float[] attackCooldown;
     [SerializeField] private ParticleSystem[] attackEffect;
     [SerializeField] private int[] attackEffectDuration;
+    [SerializeField] private GameObject[] sword;
+    [SerializeField] private LayerMask enemyLayerMask;
 
     [SerializeField] private Transform attackOffsetObject;
 
+    private int lastSwordValue;
     private bool allowAttack = true;
 
+    private void Start()
+    {
+        lastSwordValue = 1;
+    }
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0) && allowAttack)
+        if (Input.GetMouseButtonDown(0) && allowAttack)
         {
             Attack();
             allowAttack = false;
             CancelInvoke(nameof(reAllowAttack));
             Invoke(nameof(reAllowAttack), attackCooldown[currentWeaponLevel]);
         }
-        else
+
+        if (lastSwordValue != currentWeaponLevel)
         {
-            Debug.Log("AllowAttack: " + allowAttack);
+            lastSwordValue = currentWeaponLevel;
+            foreach (GameObject sword in sword)
+            {
+                if (sword != null)
+                {
+                    sword.SetActive(false);
+                }
+            }
+
+            if (sword[currentWeaponLevel] != null)
+            {
+                sword[currentWeaponLevel].SetActive(true);
+            }
         }
     }
 
@@ -36,12 +56,12 @@ public class CatAttack : MonoBehaviour
         Vector3 origin = attackOffsetObject.position;
         Vector3 direction = transform.forward;
 
-        if (Physics.SphereCast(origin, attackRange[currentWeaponLevel], direction, out hit))
+        Collider[] colliders = Physics.OverlapSphere(transform.position, attackRange[currentWeaponLevel], enemyLayerMask);
+        foreach (Collider collider in colliders)
         {
-            Debug.Log("Hit: " + hit.collider.name + " || Damage: " + attackDamage[currentWeaponLevel]);
-            if (hit.collider.gameObject.layer == 7)
+            if (collider.GetComponent<EnemyHealthController>() != null)
             {
-                hit.collider.gameObject.GetComponent<HealthController>().damage(attackDamage[currentWeaponLevel]);
+                collider.GetComponent<EnemyHealthController>().setDamage(attackDamage[currentWeaponLevel]);
             }
         }
 
