@@ -15,6 +15,7 @@ public class CatMovement : MonoBehaviour
     [SerializeField] private float dashDuration;
     [SerializeField] private float dashMultiplier;
     [SerializeField] private float dashCooldown;
+    [SerializeField] private float gravityMultiplier;
 
     private Vector3 smoothTargetMovement;
     private bool canDash = true;
@@ -53,7 +54,7 @@ public class CatMovement : MonoBehaviour
         if (characterController.isGrounded == false && applyGravity)
         {
             //Add our gravity Vecotr
-            targetMovement += Physics.gravity*2;
+            targetMovement += Physics.gravity* gravityMultiplier;
             jumpMultiplier = 0;
         }
 

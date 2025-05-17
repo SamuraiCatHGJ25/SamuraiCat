@@ -12,6 +12,8 @@ public class ArcherTower : MonoBehaviour
     [SerializeField] private LayerMask enemyLayerMask;
     [SerializeField] private GameObject arrow;
     [SerializeField] private Vector3 offset;
+    [SerializeField] private ArcherAI assignedArcher;
+    [SerializeField] private float animationDelay;
 
     [SerializeField] private bool upgrade = false;
 
@@ -37,6 +39,7 @@ public class ArcherTower : MonoBehaviour
         {
             enemy.GetComponent<EnemyHealthController>().setDamage(damage[currentArcherTowerLevel]);
             GameObject projectile = Instantiate(arrow, transform.position + offset, Quaternion.LookRotation(enemy.position - (transform.position + offset)).normalized);
+            assignedArcher.makeArcherShoot(0f);
         }
     }
 
