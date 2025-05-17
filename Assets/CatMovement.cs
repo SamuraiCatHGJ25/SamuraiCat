@@ -40,7 +40,7 @@ public class CatMovement : MonoBehaviour
             Debug.Log("Jump triggered");
             applyGravity = false;
             CancelInvoke(nameof(DisableJump));
-            Invoke(nameof(DisableJump), 0.1f);
+            Invoke(nameof(DisableJump), 0.15f);
         }
 
         jumpMultiplier = Input.GetButton("Jump") && !applyGravity ? 1 : 0;
@@ -53,7 +53,7 @@ public class CatMovement : MonoBehaviour
         if (characterController.isGrounded == false && applyGravity)
         {
             //Add our gravity Vecotr
-            targetMovement += Physics.gravity*4;
+            targetMovement += Physics.gravity*2;
             jumpMultiplier = 0;
         }
 
