@@ -67,11 +67,13 @@ public class CatMovement : MonoBehaviour
         if (eulerTargetRotation != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(eulerTargetRotation);
-            transform.rotation = Quaternion.Slerp(
+            var rotation = Quaternion.Slerp(
                 transform.rotation,
                 targetRotation,
                 rotationSpeed * Time.deltaTime
             );
+            
+            transform.rotation = new Quaternion(rotation.x, rotation.y, transform.rotation.z, rotation.w);
         }
     }
 
