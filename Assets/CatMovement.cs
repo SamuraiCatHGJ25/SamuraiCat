@@ -1,9 +1,12 @@
+using System;
+using TestingCat;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CatMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private SamuraiAnimation samuraiAnimation;
     [SerializeField] private float speedHorizontal;
     [SerializeField] private float speedVertical;
     [SerializeField] private float jumpForce;
@@ -23,6 +26,7 @@ public class CatMovement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) && canDash)
         {
+            Debug.Log("Dash triggered");
             canDash = false;
             multiplier = dashMultiplier;
             CancelInvoke(nameof(DisableDash));
@@ -33,6 +37,7 @@ public class CatMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && characterController.isGrounded)
         {
+            Debug.Log("Jump triggered");
             applyGravity = false;
             CancelInvoke(nameof(DisableJump));
             Invoke(nameof(DisableJump), 0.1f);
@@ -56,6 +61,7 @@ public class CatMovement : MonoBehaviour
 
         smoothTargetMovement = Vector3.Lerp(smoothTargetMovement, targetMovement, movementSmoothness * Time.deltaTime);
 
+        samuraiAnimation.UpdateAnimation(Math.Abs(horizontal) > 0 || Math.Abs(vertical) > 0);
         characterController.Move(smoothTargetMovement * Time.deltaTime);
 
         if (eulerTargetRotation != Vector3.zero)
