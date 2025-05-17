@@ -1,11 +1,15 @@
+using System;
+using TestingCat;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CatMovement : MonoBehaviour
 {
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private SamuraiAnimation samuraiAnimation;
     [SerializeField] private float speedHorizontal;
     [SerializeField] private float speedVertical;
+    [SerializeField] private float jumpForce;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float movementSmoothness;
     [SerializeField] private float dashDuration;
@@ -14,12 +18,15 @@ public class CatMovement : MonoBehaviour
 
     private Vector3 smoothTargetMovement;
     private bool canDash = true;
+    private bool applyGravity = true;
     private float multiplier = 1;
+    private float jumpMultiplier;
 
     private void Update()
     {
         if (Input.GetKey(KeyCode.LeftShift) && canDash)
         {
+            Debug.Log("Dash triggered");
             canDash = false;
             multiplier = dashMultiplier;
             CancelInvoke(nameof(DisableDash));
@@ -28,11 +35,33 @@ public class CatMovement : MonoBehaviour
             Invoke(nameof(EnableDash), dashCooldown);
         }
 
-        Vector3 targetMovement = new Vector3(Input.GetAxis("Horizontal") * speedHorizontal * multiplier, 0, Input.GetAxis("Vertical") * speedVertical * multiplier);
+        if (Input.GetButtonDown("Jump") && characterController.isGrounded)
+        {
+            Debug.Log("Jump triggered");
+            applyGravity = false;
+            CancelInvoke(nameof(DisableJump));
+            Invoke(nameof(DisableJump), 0.1f);
+        }
+
+        jumpMultiplier = Input.GetButton("Jump") && !applyGravity ? 1 : 0;
+        
+        float horizontal = Input.GetAxis("Horizontal") * speedHorizontal * multiplier;
+        float vertical = Input.GetAxis("Vertical") * speedVertical * multiplier;
+        float jump =  jumpMultiplier * jumpForce * multiplier;
+        
+        Vector3 targetMovement = new Vector3(horizontal, jump, vertical);
+        if (characterController.isGrounded == false && applyGravity)
+        {
+            //Add our gravity Vecotr
+            targetMovement += Physics.gravity*4;
+            jumpMultiplier = 0;
+        }
+
         Vector3 eulerTargetRotation = targetMovement.normalized;
 
         smoothTargetMovement = Vector3.Lerp(smoothTargetMovement, targetMovement, movementSmoothness * Time.deltaTime);
 
+        samuraiAnimation.UpdateAnimation(Math.Abs(horizontal) > 0 || Math.Abs(vertical) > 0);
         characterController.Move(smoothTargetMovement * Time.deltaTime);
 
         if (eulerTargetRotation != Vector3.zero)
@@ -54,5 +83,10 @@ public class CatMovement : MonoBehaviour
     private void EnableDash()
     {
         canDash = true;
+    }
+
+    private void DisableJump()
+    {
+        applyGravity = true;
     }
 }
