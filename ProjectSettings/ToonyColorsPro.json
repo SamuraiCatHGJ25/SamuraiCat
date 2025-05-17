@@ -8,7 +8,11 @@
     "OpenedFoldouts": [
         "LIGHTING",
         "SURFACE",
-        "STYLIZATION"
+        "STYLIZATION",
+        "SPECIAL EFFECTS",
+        "TRANSPARENCY/BLENDING",
+        "SHADER STATES",
+        "OPTIONS"
     ],
     "UseCustomFont": true,
     "CustomFont": {
