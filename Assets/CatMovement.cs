@@ -1,7 +1,5 @@
 using System;
-using TestingCat;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CatMovement : MonoBehaviour
 {

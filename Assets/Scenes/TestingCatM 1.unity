@@ -1539,6 +1539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 1825430962}
   timeBeforeDespawn: 0.3
@@ -2285,6 +2286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 63389921}
   timeBeforeDespawn: 0.3
@@ -3393,6 +3395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 661377795}
   timeBeforeDespawn: 0.3
@@ -4139,6 +4142,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ef49ae60314ec614387fdf0d85e8e829, type: 3}
       insertIndex: -1
       addedObject: {fileID: 649731803}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ef49ae60314ec614387fdf0d85e8e829, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 649731804}
   m_SourcePrefab: {fileID: 100100000, guid: ef49ae60314ec614387fdf0d85e8e829, type: 3}
 --- !u!1001 &519265182
 PrefabInstance:
@@ -4295,6 +4301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 1566715651}
   timeBeforeDespawn: 0.3
@@ -5860,6 +5867,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   attackOffsetObject: {fileID: 1697563495}
+--- !u!114 &649731804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649731795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faaa01da8a084cd6978f06a05bee678b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  balance: 0
 --- !u!43 &651442296
 Mesh:
   m_ObjectHideFlags: 0
@@ -6482,6 +6502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 2033998966}
   timeBeforeDespawn: 0.3
@@ -9297,6 +9318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 1184804988}
   timeBeforeDespawn: 0.3
@@ -9524,6 +9546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 850516695}
   timeBeforeDespawn: 0.3
@@ -12413,6 +12436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 823952625}
   timeBeforeDespawn: 0.3
@@ -13628,6 +13652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 2137208197}
   timeBeforeDespawn: 0.3
@@ -16192,6 +16217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a3eb305caf2f348ad255dc8ee6c38d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyController: {fileID: 649731804}
   healthPoints: 40
   deathEffect: {fileID: 989784005}
   timeBeforeDespawn: 0.3

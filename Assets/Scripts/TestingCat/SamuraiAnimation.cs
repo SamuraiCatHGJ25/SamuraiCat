@@ -1,17 +1,14 @@
 using UnityEngine;
 
-namespace TestingCat
+public class SamuraiAnimation : MonoBehaviour
 {
-    public class SamuraiAnimation : MonoBehaviour
+    private static readonly int IsRunning = Animator.StringToHash("IsRunning");
+
+    [SerializeField] private Animator _animator;
+    [SerializeField] private CharacterController _characterController;
+
+    public void UpdateAnimation(bool isRunning)
     {
-        private static readonly int IsRunning = Animator.StringToHash("IsRunning");
-
-        [SerializeField] private Animator _animator;
-        [SerializeField] private CharacterController _characterController;
-
-        public void UpdateAnimation(bool isRunning)
-        {
-            _animator.SetBool(IsRunning, isRunning);
-        }
+        _animator.SetBool(IsRunning, isRunning);
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemyHealthController : MonoBehaviour
 {
+    [SerializeField] private CurrencyController currencyController;
     [SerializeField] private int healthPoints;
     private int currentHealthPoints;
     [SerializeField] private ParticleSystem deathEffect;
@@ -19,6 +20,9 @@ public class EnemyHealthController : MonoBehaviour
         Debug.Log("received damage");
         if(currentHealthPoints <= 0)
         {
+            // TODO: Implement variable balance based on enemy type
+            currencyController.AddBalance(1);
+
             deathEffect.Play();
             Destroy(gameObject, timeBeforeDespawn);
         }
