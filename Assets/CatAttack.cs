@@ -1,8 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CatAttack : MonoBehaviour
 {
-    [SerializeField] private int currentAttackValue;
+    [SerializeField] private int currentWeaponLevel;
 
     [SerializeField] private int[] attackDamage;
     [SerializeField] private float[] attackRange;
@@ -12,7 +13,7 @@ public class CatAttack : MonoBehaviour
 
     [SerializeField] private Transform attackOffsetObject;
 
-    private bool allowAttack;
+    private bool allowAttack = true;
 
     private void Update()
     {
@@ -21,7 +22,11 @@ public class CatAttack : MonoBehaviour
             Attack();
             allowAttack = false;
             CancelInvoke(nameof(reAllowAttack));
-            Invoke(nameof(allowAttack), attackCooldown[currentAttackValue]);
+            Invoke(nameof(reAllowAttack), attackCooldown[currentWeaponLevel]);
+        }
+        else
+        {
+            Debug.Log("AllowAttack: " + allowAttack);
         }
     }
 
@@ -31,18 +36,22 @@ public class CatAttack : MonoBehaviour
         Vector3 origin = attackOffsetObject.position;
         Vector3 direction = transform.forward;
 
-        if (Physics.SphereCast(origin, attackRange[currentAttackValue], direction, out hit))
+        if (Physics.SphereCast(origin, attackRange[currentWeaponLevel], direction, out hit))
         {
-            Debug.Log("Hit: " + hit.collider.name + " || Damage: " + attackDamage[currentAttackValue]);
+            Debug.Log("Hit: " + hit.collider.name + " || Damage: " + attackDamage[currentWeaponLevel]);
+            if (hit.collider.gameObject.layer == 7)
+            {
+                hit.collider.gameObject.GetComponent<HealthController>().damage(attackDamage[currentWeaponLevel]);
+            }
         }
 
-        attackEffect[currentAttackValue].Play();
+        attackEffect[currentWeaponLevel].Play();
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(attackOffsetObject.position, attackRange[currentAttackValue]);
+        Gizmos.DrawWireSphere(attackOffsetObject.position, attackRange[currentWeaponLevel]);
     }
 
     private void reAllowAttack()

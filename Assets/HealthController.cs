@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class HealthController : MonoBehaviour
 {
+
+    // Fires on damage/heal, takes current health and +/- HP
+    public event Action<int, int> HealthChanged;
+
     [SerializeField] private int maxHealth;
     // Armor protects unit from damage, trading 1 unit of armor for 1 instance of damage
     [SerializeField] private int armor;
@@ -24,13 +28,13 @@ public class HealthController : MonoBehaviour
     {
     }
 
-    void die(String unitName)
+    private void die(String unitName)
     {
         // play death anim and effects by asset/file name specified in calling func
         Destroy(this.gameObject);
     }
 
-    void damage(int damage)
+    public void damage(int damage)
     {
         if (armor > 0)
         {
@@ -45,7 +49,7 @@ public class HealthController : MonoBehaviour
      }
     }
 
-    void heal(int heal)
+    public void heal(int heal)
     {
         curHealth += heal;
         if (curHealth > maxHealth)
@@ -54,7 +58,7 @@ public class HealthController : MonoBehaviour
         }
     }
 
-    void addArmor(int armor)
+    public void addArmor(int armor)
     {
         armor += armor;
         if (armor >= maxArmor)
@@ -63,7 +67,7 @@ public class HealthController : MonoBehaviour
         }
     }
 
-    void removeArmor(int armor)
+    public void removeArmor(int armor)
     {
         armor -= armor;
         if (armor > 0)
