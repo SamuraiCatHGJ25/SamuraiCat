@@ -6,10 +6,12 @@ public class HealthController : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject nonPlayerCharacter;
+    [SerializeField] private PauseMenu GameOverCanvas;
     [SerializeField] private int maxHealth;
     // Armor protects unit from damage, trading 1 unit of armor for 1 instance of damage
     [SerializeField] private int armor;
     [SerializeField] private int maxArmor;
+    [SerializeField] private bool isGameOverCondition;
     [SerializeField] private String anim_hurt;
     [SerializeField] private String anim_death;
     
@@ -36,6 +38,11 @@ public class HealthController : MonoBehaviour
     {
         // play death anim and effects by asset/file name specified in calling func
         Destroy(this.gameObject);
+
+        if (isGameOverCondition)
+        {
+            GameOverCanvas.TogglePause();
+        }
     }
 
     public void damage(int damage)

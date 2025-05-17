@@ -1,12 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
+    [SerializeField] private bool isGameOverScreen;
 
     private void Update()
     {
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel") && !isGameOverScreen)
         {
             TogglePause();
         }
@@ -24,5 +26,10 @@ public class PauseMenu : MonoBehaviour
             Time.timeScale = 0f;
             canvas.enabled = true;
         }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
