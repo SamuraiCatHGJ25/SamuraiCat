@@ -1,79 +1,77 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EquipmentManager : MonoBehaviour
 {
+    [SerializeField] private int[] katanaPriceConfig;
+    [SerializeField] private int[] towerPriceConfig;
+    [SerializeField] private int[] magicPriceConfig;
+
     [SerializeField] private bool[] katanasOwned;
-    [SerializeField] private CatAttack catAttack;
-    [SerializeField] private CurrencyController currencyController;
+    [SerializeField] private bool[] magicOwned;
+    [SerializeField] private bool[] archerTowerLevelOwned;
 
     [SerializeField] private Button[] katanaEquipButtons;
     [SerializeField] private Button[] katanaBuyButtons;
+    
+    [SerializeField] private Button[] magicEquipButtons;
+    [SerializeField] private Button[] magicBuyButtons;
 
     [SerializeField] private Button[] towerBuyButtons;
-
-    [SerializeField] private bool[] archerTowerLevelOwned;
     [SerializeField] private GameObject towerRoot;
+
+    [SerializeField] private CatAttack catAttack;
+    [SerializeField] private CurrencyController currencyController;
+    [SerializeField] private SpellCaster spellController;
 
     private void Awake()
     {
-        katanaEquipButtons[0].onClick.AddListener(() =>
+        for (var i = 0; i < katanaEquipButtons.Length; i++)
         {
-            equipKatana(1);
-        });
-        katanaEquipButtons[1].onClick.AddListener(() =>
-        {
-            equipKatana(2);
-        });
-        katanaEquipButtons[2].onClick.AddListener(() =>
-        {
-            equipKatana(3);
-        });
+            var offset = i;
+            katanaEquipButtons[i].onClick.AddListener(() =>
+            {
+                equipKatana(offset + 1);
+            });
+        }
 
-        katanaBuyButtons[0].onClick.AddListener(() =>
+        for (var i = 0; i < katanaBuyButtons.Length; i++)
         {
-            buyKatana(0, 0);
-        });
-        katanaBuyButtons[1].onClick.AddListener(() =>
-        {
-            buyKatana(1, 300);
-        });
-        katanaBuyButtons[2].onClick.AddListener(() =>
-        {
-            buyKatana(2, 900);
-        });
+            var offset = i;
+            katanaBuyButtons[i].onClick.AddListener(() =>
+            { 
+                buyKatana(offset, katanaPriceConfig[offset]);
+            });
+        }
 
-        towerBuyButtons[0].onClick.AddListener(() =>
+        for (var i = 0; i < towerBuyButtons.Length; i++)
         {
-            buyTower(0, 0);
-        });
-        towerBuyButtons[1].onClick.AddListener(() =>
-        {
-            buyTower(1, 300);
-        });
-        towerBuyButtons[2].onClick.AddListener(() =>
-        {
-            buyTower(2, 900);
-        });
+            var offset = i;
+            towerBuyButtons[i].onClick.AddListener(() =>
+            { 
+                buyTower(offset, towerPriceConfig[offset]);
+            });
+        }
     }
 
-    public void buyKatana(int katanaId, int amount)
+    public void buyKatana(int katanaId, int price)
     {
-        if (katanasOwned[katanaId] == false && amount < currencyController.GetBalance())
+        if (katanasOwned[katanaId] == false && price < currencyController.GetBalance())
         {
-            currencyController.AddBalance(-amount);
+            currencyController.AddBalance(-price);
             katanasOwned[katanaId] = true;
             katanaEquipButtons[katanaId].interactable = true;
             katanaBuyButtons[katanaId].interactable = false;
         }
     }
 
-    private void buyTower(int towerId, int cost)
+    private void buyTower(int towerId, int price)
     {
-        if (archerTowerLevelOwned[towerId] == false && cost < currencyController.GetBalance())
+        if (archerTowerLevelOwned[towerId] == false && price < currencyController.GetBalance())
         {
             Debug.Log("Upgrading towers");
-            currencyController.AddBalance(-cost);
+            currencyController.AddBalance(-price);
             archerTowerLevelOwned[towerId] = true;
             towerBuyButtons[towerId].interactable = false;
             foreach (ArcherTower tower in towerRoot.GetComponentsInChildren(typeof(ArcherTower)))
@@ -82,6 +80,22 @@ public class EquipmentManager : MonoBehaviour
                 tower.upgradeArcherTower();
             }
         }
+    }
+
+    public void buyMagic(int magicId, int price)
+    {
+        if (katanasOwned[magicId] == false && price < currencyController.GetBalance())
+        {
+            currencyController.AddBalance(-price);
+            katanasOwned[magicId] = true;
+            katanaEquipButtons[magicId].interactable = true;
+            katanaBuyButtons[magicId].interactable = false;
+        }
+    }
+
+    private void equipMagic(int magicId)
+    {
+        
     }
 
     public void equipKatana(int katanaId)
