@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic; // For cooldowns
+using System.Collections.Generic;
+using UnityEngine.UI; // For cooldowns
 
 public class SpellCaster : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class SpellCaster : MonoBehaviour
     [SerializeField] public float manaRegenRate = 5f; // Mana per second
 
     private Dictionary<SpellData, float> spellCooldowns = new Dictionary<SpellData, float>();
-
+    private Image manaBar;
+    
     void Start()
     {
         if (castPoint == null)
@@ -27,6 +29,8 @@ public class SpellCaster : MonoBehaviour
         {
             spellCooldowns[spell] = 0f;
         }
+        
+        manaBar = GameObject.Find("MPBarBackground").GetComponent<Image>();
     }
 
     void Update()
@@ -46,7 +50,7 @@ public class SpellCaster : MonoBehaviour
         {
             currentMana += manaRegenRate * Time.deltaTime;
             currentMana = Mathf.Min(currentMana, maxMana);
-            // UpdateManaUI(); // Call your UI update method
+            UpdateManaBar(manaBar);
         }
 
 
@@ -208,5 +212,10 @@ public class SpellCaster : MonoBehaviour
             Instantiate(hitEffectPrefab, target.position, Quaternion.LookRotation(target.position - castPoint.position));
             // Destroy hit effect after a short duration if it doesn't destroy itself
         }
+    }
+    
+    public void UpdateManaBar(Image bar)
+    {
+        bar.fillAmount = currentMana / (float)maxMana;
     }
 }

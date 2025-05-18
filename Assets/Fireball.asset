@@ -18,9 +18,9 @@ MonoBehaviour:
   cooldown: 1
   manaCost: 10
   damage: 15
-  projectilePrefab: {fileID: 0}
-  projectileSpeed: 2
-  projectileLifetime: 5
+  projectilePrefab: {fileID: 1113608046694334964, guid: 37d3ef7c6e98dd58ab9288995781a538, type: 3}
+  projectileSpeed: 25.7
+  projectileLifetime: 1.12
   directionalAoEPrefab: {fileID: 0}
   aoeRange: 5
   aoeWidth: 3
@@ -30,6 +30,6 @@ MonoBehaviour:
   shockwaveRadius: 5
   hitMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8374
   hitEffectPrefab: {fileID: 0}
   effectDuration: 0.5

@@ -75,10 +75,10 @@ public class Projectile : MonoBehaviour
         Debug.Log($"{gameObject.name} hit {hitTarget.name}");
 
         // Apply Damage
-        HealthController health = hitTarget.GetComponent<HealthController>();
+        EnemyHealthController health = hitTarget.GetComponent<EnemyHealthController>();
         if (health != null)
         {
-            health.damage((int)damage);
+            health.setDamage((int)damage);
         }
 
         // Spawn Hit Effect
