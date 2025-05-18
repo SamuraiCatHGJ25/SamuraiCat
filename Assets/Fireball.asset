@@ -30,6 +30,6 @@ MonoBehaviour:
   shockwaveRadius: 5
   hitMask:
     serializedVersion: 2
-    m_Bits: 8374
+    m_Bits: 182
   hitEffectPrefab: {fileID: 0}
   effectDuration: 0.5
