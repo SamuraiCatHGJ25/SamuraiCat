@@ -16031,6 +16031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currencyController: {fileID: 649731804}
+  enemyFactory: {fileID: 649731806}
   healthPoints: 40
   deathEffect: {fileID: 2137208197}
   timeBeforeDespawn: 0.3
