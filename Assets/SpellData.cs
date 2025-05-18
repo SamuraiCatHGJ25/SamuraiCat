@@ -17,7 +17,8 @@ public class SpellData : ScriptableObject
     public float cooldown = 1f;
     public float manaCost = 10f;
     public float damage = 10f;
-
+    public float castingDelay = 0f;
+        
     [Header("Projectile Specific (if SpellType is Projectile)")]
     public GameObject projectilePrefab;
     public float projectileSpeed = 20f;

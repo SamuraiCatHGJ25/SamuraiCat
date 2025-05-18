@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI; // For cooldowns
@@ -13,9 +14,20 @@ public class SpellCaster : MonoBehaviour
     public float currentMana = 100f;
     [SerializeField] public float maxMana = 100f;
     [SerializeField] public float manaRegenRate = 5f; // Mana per second
-
+    [SerializeField] public Boolean[] spellUnlocked; // are spells unlocked yet?
     private Dictionary<SpellData, float> spellCooldowns = new Dictionary<SpellData, float>();
     private Image manaBar;
+    private Boolean castDelayed = false;
+    
+    IEnumerator delayCast(float delay)
+    {
+        castDelayed = true;
+        
+        // Move the first cube up or down.
+        yield return new WaitForSeconds(delay);
+
+        castDelayed = false;
+    }
     
     void Start()
     {
@@ -52,15 +64,19 @@ public class SpellCaster : MonoBehaviour
             currentMana = Mathf.Min(currentMana, maxMana);
             UpdateManaBar(manaBar);
         }
+        
+        if (Input.GetKeyDown(KeyCode.Alpha1) && spellUnlocked[0].Equals(true)) currentSpellIndex = 0;
+        if (Input.GetKeyDown(KeyCode.Alpha2) && spellUnlocked[1].Equals(true)) currentSpellIndex = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha3) && spellUnlocked[2].Equals(true)) currentSpellIndex = 2;
+
+        for (int i = 0; i < availableSpells.Count; i++)
+        {
+            
+        }
 
 
-        // --- Example Input ---
-        if (Input.GetKeyDown(KeyCode.Alpha1) && availableSpells.Count > 0) currentSpellIndex = 0;
-        if (Input.GetKeyDown(KeyCode.Alpha2) && availableSpells.Count > 1) currentSpellIndex = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha3) && availableSpells.Count > 2) currentSpellIndex = 2;
-        // ... and so on
 
-        if (Input.GetButtonDown("Fire1")) //  Left Mouse Click or other cast button
+        if (Input.GetButtonDown("Fire2")) //  Left Mouse Click or other cast button
         {
             if (availableSpells.Count > currentSpellIndex)
             {
@@ -80,11 +96,10 @@ public class SpellCaster : MonoBehaviour
         if (spellCooldowns.ContainsKey(spell) && spellCooldowns[spell] <= 0 && currentMana >= spell.manaCost)
         {
             currentMana -= spell.manaCost;
-            // UpdateManaUI();
-
+            
+            Debug.Log($"Casting {spell.spellName}!");
             CastSpellActual(spell);
             spellCooldowns[spell] = spell.cooldown; // Start cooldown
-            Debug.Log($"Casting {spell.spellName}!");
         }
         else if (currentMana < spell.manaCost)
         {
@@ -115,8 +130,7 @@ public class SpellCaster : MonoBehaviour
                 break;
         }
     }
-
-    // --- Spell Type Specific Casting Methods ---
+    
 
     private void CastProjectile(SpellData spell, Vector3 origin, Quaternion rotation)
     {
@@ -128,7 +142,7 @@ public class SpellCaster : MonoBehaviour
 
         GameObject projectileGO = Instantiate(spell.projectilePrefab, origin, rotation);
         Projectile projectileScript = projectileGO.GetComponent<Projectile>();
-
+        
         if (projectileScript != null)
         {
             projectileScript.Initialize(spell.damage, spell.projectileSpeed, spell.projectileLifetime, spell.hitMask, spell.hitEffectPrefab);
@@ -155,11 +169,24 @@ public class SpellCaster : MonoBehaviour
             // e.g., vfx.transform.localScale = new Vector3(spell.aoeWidth, spell.aoeHeight, spell.aoeRange);
             Destroy(vfx, spell.effectDuration);
         }
+        
+        
 
         // Calculate Box AoE parameters
         // The center of the box is pushed forward slightly from the cast point along its forward direction
         Vector3 boxCenter = origin + (castPoint.forward * (spell.aoeRange / 2f + spell.aoeOffsetDistance));
         Vector3 halfExtents = new Vector3(spell.aoeWidth / 2f, spell.aoeHeight / 2f, spell.aoeRange / 2f);
+        
+        if (spell.castingDelay > 0f)
+        {
+            Debug.Log($"Delayed Spell Cast > {spell.spellName}!");
+            castDelayed = true;
+            StartCoroutine(delayCast(spell.castingDelay));
+            while (castDelayed)
+            {
+                Debug.Log($"Waiting to cast...");
+            }
+        }
 
         Collider[] hits = Physics.OverlapBox(boxCenter, halfExtents, rotation, spell.hitMask);
 
@@ -169,6 +196,7 @@ public class SpellCaster : MonoBehaviour
             if (hit.transform == transform) continue;
 
             Debug.Log($"Directional AOE hit: {hit.name}");
+            
             ApplyDamageAndEffect(hit.transform, spell.damage, spell.hitEffectPrefab);
             // You might want to ensure each target is only hit once per cast
         }
@@ -185,14 +213,23 @@ public class SpellCaster : MonoBehaviour
             // vfx.transform.localScale = Vector3.one * spell.shockwaveRadius * 2; // For a sphere
             Destroy(vfx, spell.effectDuration);
         }
-
+        
+        if (spell.castingDelay > 0f)
+        {
+            Debug.Log($"Delayed Spell Cast > {spell.spellName}!");
+            StartCoroutine(delayCast(spell.castingDelay));
+            while (castDelayed)
+            {
+                Debug.Log($"Waiting to cast...");
+            }
+        }
         Collider[] hits = Physics.OverlapSphere(origin, spell.shockwaveRadius, spell.hitMask);
 
         foreach (Collider hit in hits)
         {
             // Ensure we don't hit ourselves
             if (hit.transform == transform) continue;
-
+            
             Debug.Log($"Radial AOE hit: {hit.name}");
             ApplyDamageAndEffect(hit.transform, spell.damage, spell.hitEffectPrefab);
         }
@@ -201,10 +238,10 @@ public class SpellCaster : MonoBehaviour
     private void ApplyDamageAndEffect(Transform target, float damage, GameObject hitEffectPrefab)
     {
         // Attempt to get a HealthController (or your equivalent) from the target
-        HealthController healthController = target.GetComponent<HealthController>();
+        EnemyHealthController healthController = target.GetComponent<EnemyHealthController>();
         if (healthController != null)
         {
-            healthController.damage((int)damage); // Assuming TakeDamage takes an int
+            healthController.setDamage((int)damage); // Assuming TakeDamage takes an int
         }
 
         if (hitEffectPrefab != null)
@@ -217,5 +254,23 @@ public class SpellCaster : MonoBehaviour
     public void UpdateManaBar(Image bar)
     {
         bar.fillAmount = currentMana / (float)maxMana;
+    }
+
+    public void unlockSpell(int spellId)
+    {
+        if (spellId == 1)
+        {
+            spellUnlocked.SetValue(true, 0);
+        }
+
+        if (spellId == 2)
+        {
+            spellUnlocked.SetValue(true, 1);
+        }
+
+        if (spellId == 3)
+        {
+            spellUnlocked.SetValue(true, 2);
+        }
     }
 }
