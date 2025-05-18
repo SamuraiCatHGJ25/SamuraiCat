@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CameraTitileRotation : MonoBehaviour
@@ -7,6 +8,7 @@ public class CameraTitileRotation : MonoBehaviour
     [SerializeField] private Transform regularRotation;
     [SerializeField] private Transform targetRotation;
     [SerializeField] private Button creditsButton;
+    [SerializeField] private Button playButton;
     [SerializeField] private Button backButton;
     private bool lookAround = false;
 
@@ -19,6 +21,10 @@ public class CameraTitileRotation : MonoBehaviour
         backButton.onClick.AddListener(() =>
         {
             Switch();
+        });
+        playButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene(1);
         });
     }
 

@@ -658,6 +658,7 @@ MonoBehaviour:
   regularRotation: {fileID: 1127224753}
   targetRotation: {fileID: 1620217633}
   creditsButton: {fileID: 144652305}
+  playButton: {fileID: 142199674}
   backButton: {fileID: 1213116417}
 --- !u!1 &224396923
 GameObject:

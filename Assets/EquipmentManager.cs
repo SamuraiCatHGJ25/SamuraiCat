@@ -6,11 +6,13 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private int money;
 
     [SerializeField] private bool[] katanasOwned;
-    [SerializeField] private int katanaEquipped;
     [SerializeField] private CatAttack catAttack;
 
     [SerializeField] private Button[] katanaEquipButtons;
     [SerializeField] private Button[] katanaBuyButtons;
+
+    [SerializeField] private bool[] msOwned;
+    [SerializeField] private int msEquipped;
 
     [SerializeField] private bool[] archerTowerLevelOwned;
 
@@ -56,5 +58,21 @@ public class EquipmentManager : MonoBehaviour
     public void equipKatana(int katanaId)
     {
         catAttack.currentWeaponLevel = katanaId;
+    }
+
+    public void buyMs(int id, int amount)
+    {
+        if (msOwned[id] == false && amount < money)
+        {
+            money -= amount;
+            katanasOwned[id] = true;
+            katanaEquipButtons[id].interactable = true;
+            katanaBuyButtons[id].interactable = false;
+        }
+    }
+
+    public void equipMs(int id)
+    {
+        catAttack.currentWeaponLevel = id;
     }
 }

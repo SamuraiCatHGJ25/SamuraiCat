@@ -4,6 +4,7 @@ public class Interactor : MonoBehaviour, IInteractable
 {
     [SerializeField] private string interactText;
     [SerializeField] private Movement movement;
+    [SerializeField] private bool isShopKeeper = false;
     [SerializeField] private bool inShop = false;
     [SerializeField] private GameObject userInterface;
     public string GetInteractText()
@@ -18,6 +19,7 @@ public class Interactor : MonoBehaviour, IInteractable
 
     public void Interact(Transform interactorTransform)
     {
+        if(!isShopKeeper) { return; }
         if(!inShop)
         {
             movement.SetShop(1);
