@@ -5,6 +5,13 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 {
 	Properties
 	{
+		[Enum(Front, 2, Back, 1, Both, 0)] _Cull ("Render Face", Float) = 2.0
+		[TCP2ToggleNoKeyword] _ZWrite ("Depth Write", Float) = 1.0
+		[HideInInspector] _RenderingMode ("rendering mode", Float) = 0.0
+		[HideInInspector] _SrcBlend ("blending source", Float) = 1.0
+		[HideInInspector] _DstBlend ("blending destination", Float) = 0.0
+		[TCP2Separator]
+
 		[TCP2HeaderHelp(Base)]
 		_BaseColor ("Color", Color) = (1,1,1,1)
 		[TCP2ColorNoAlpha] _HColor ("Highlight Color", Color) = (0.75,0.75,0.75,1)
@@ -53,7 +60,8 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 		Tags
 		{
 			"RenderPipeline" = "UniversalPipeline"
-			"RenderType"="Opaque"
+			"RenderType"="TransparentCutout"
+			"Queue"="AlphaTest"
 		}
 
 		HLSLINCLUDE
@@ -109,6 +117,36 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 			#define unity_WorldToObject UNITY_MATRIX_I_M
 		#endif
 
+		static const float DITHER_THRESHOLD_8x8[64] =
+		{
+			0.2627,0.7725,0.3843,0.9529,0.2941,0.8196,0.4118,1.0000,
+			0.5020,0.0392,0.6235,0.1412,0.5333,0.0510,0.6549,0.1725,
+			0.3216,0.8627,0.2039,0.6824,0.3529,0.9098,0.2314,0.7294,
+			0.5647,0.0824,0.4431,0.0078,0.5922,0.1137,0.4745,0.0235,
+			0.2784,0.7961,0.4000,0.9765,0.2471,0.7529,0.3686,0.9333,
+			0.5176,0.0471,0.6392,0.1569,0.4902,0.0314,0.6078,0.1294,
+			0.3373,0.8863,0.2196,0.7059,0.3098,0.8431,0.1882,0.6706,
+			0.5804,0.0980,0.4588,0.0157,0.5490,0.0667,0.4275,0.0001
+		};
+		float Dither8x8(float2 positionCS)
+		{
+			uint index = (uint(positionCS.x) % 8) * 8 + uint(positionCS.y) % 8;
+			return DITHER_THRESHOLD_8x8[index];
+		}
+		
+		static const float DITHER_THRESHOLDS_4x4[16] =
+		{
+			0.0588, 0.5294, 0.1765, 0.6471,
+			0.7647, 0.2941, 0.8823, 0.4118,
+			0.2353, 0.7059, 0.1176, 0.5882,
+			0.9412, 0.4706, 0.8235, 0.3529
+		};
+		float Dither4x4(float2 positionCS)
+		{
+			uint index = (uint(positionCS.x) % 4) * 4 + uint(positionCS.y) % 4;
+			return DITHER_THRESHOLDS_4x4[index];
+		}
+		
 		// Built-in renderer (CG) to SRP (HLSL) bindings
 		#define UnityObjectToClipPos TransformObjectToHClip
 		#define _WorldSpaceLightPos0 _MainLightPosition
@@ -253,6 +291,10 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 			{
 				"LightMode"="UniversalForward"
 			}
+		Blend [_SrcBlend] [_DstBlend]
+		Cull [_Cull]
+		ZWrite [_ZWrite]
+			AlphaToMask On
 
 			HLSLPROGRAM
 			// Required to compile gles 2.0 with standard SRP library
@@ -282,6 +324,10 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 
 			#pragma vertex Vertex
 			#pragma fragment Fragment
+
+			//--------------------------------------
+			// Toony Colors Pro 2 keywords
+		#pragma shader_feature_local _ _ALPHAPREMULTIPLY_ON
 
 			// vertex input
 			struct Attributes
@@ -394,6 +440,10 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 				half alpha = __alpha;
 
 				half3 emission = half3(0,0,0);
+				// Alpha Testing
+				half cutoffValue = Dither4x4(input.positionCS.xy);
+				// Sharpen Alpha-to-Coverage
+				alpha = (alpha - cutoffValue) / max(fwidth(alpha), 0.0001) + 0.5;
 				half4 albedoAlpha = half4(albedo, alpha);
 				
 				// Texture Blending: sample
@@ -515,6 +565,11 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 
 				// apply ambient
 				color += indirectDiffuse;
+
+				// Premultiply blending
+				#if defined(_ALPHAPREMULTIPLY_ON)
+					color.rgb *= alpha;
+				#endif
 
 				color += emission;
 
@@ -651,8 +706,12 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 				half3 albedo = half3(1,1,1);
 				half alpha = __alpha;
 				half3 emission = half3(0,0,0);
+				// Alpha Testing
+				half cutoffValue = Dither4x4(input.positionCS.xy);
+				// Sharpen Alpha-to-Coverage
+				alpha = (alpha - cutoffValue) / max(fwidth(alpha), 0.0001) + 0.5;
 
-				return 0;
+				return alpha;
 			}
 
 		#endif
@@ -666,6 +725,7 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 				"LightMode" = "ShadowCaster"
 			}
 
+			AlphaToMask On
 			ZWrite On
 			ZTest LEqual
 
@@ -700,8 +760,10 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 				"LightMode" = "DepthOnly"
 			}
 
+			AlphaToMask On
 			ZWrite On
 			ColorMask 0
+			Cull [_Cull]
 
 			HLSLPROGRAM
 
@@ -729,5 +791,5 @@ Shader "Toony Colors Pro 2/User/CatSamurai"
 	CustomEditor "ToonyColorsPro.ShaderGenerator.MaterialInspector_SG2"
 }
 
-/* TCP_DATA u config(ver:"2.9.11";unity:"6000.1.3f1";tmplt:"SG2_Template_URP";features:list["UNITY_5_4","UNITY_5_5","UNITY_5_6","UNITY_2017_1","UNITY_2018_1","UNITY_2018_2","UNITY_2018_3","UNITY_2019_1","UNITY_2019_2","UNITY_2019_3","UNITY_2019_4","UNITY_2020_1","UNITY_2021_1","UNITY_2021_2","UNITY_2022_2","RIM_OUTLINE","OUTLINE","TEMPLATE_LWRP","BUMP","TEXTURE_BLENDING","TEXBLEND_LINEAR"];flags:list[];flags_extra:dict[];keywords:dict[RENDER_TYPE="Opaque",RampTextureDrawer="[TCP2Gradient]",RampTextureLabel="Ramp Texture",SHADER_TARGET="3.0",RIM_LABEL="Rim Outline"];shaderProperties:list[];customTextures:list[];codeInjection:codeInjection(injectedFiles:list[];mark:False);matLayers:list[]) */
-/* TCP_HASH e9858401cfb54e6c8f44083dd94bcc0b */
+/* TCP_DATA u config(ver:"2.9.11";unity:"6000.1.3f1";tmplt:"SG2_Template_URP";features:list["UNITY_5_4","UNITY_5_5","UNITY_5_6","UNITY_2017_1","UNITY_2018_1","UNITY_2018_2","UNITY_2018_3","UNITY_2019_1","UNITY_2019_2","UNITY_2019_3","UNITY_2019_4","UNITY_2020_1","UNITY_2021_1","UNITY_2021_2","UNITY_2022_2","RIM_OUTLINE","OUTLINE","BUMP","TEXTURE_BLENDING","TEXBLEND_LINEAR","AUTO_TRANSPARENT_BLENDING","ALPHA_TESTING","ALPHA_TESTING_DITHERING","TEMPLATE_LWRP","ALPHA_TO_COVERAGE"];flags:list[];flags_extra:dict[];keywords:dict[RENDER_TYPE="TransparentCutout",RampTextureDrawer="[TCP2Gradient]",RampTextureLabel="Ramp Texture",SHADER_TARGET="3.0",RIM_LABEL="Rim Outline"];shaderProperties:list[];customTextures:list[];codeInjection:codeInjection(injectedFiles:list[];mark:False);matLayers:list[]) */
+/* TCP_HASH 2e3327ce9e68858bae7ee81ed89391bc */
