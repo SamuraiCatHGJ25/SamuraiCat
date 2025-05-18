@@ -3,18 +3,17 @@ using UnityEngine.UI;
 
 public class EquipmentManager : MonoBehaviour
 {
-    [SerializeField] private int money;
-
     [SerializeField] private bool[] katanasOwned;
     [SerializeField] private CatAttack catAttack;
+    [SerializeField] private CurrencyController currencyController;
 
     [SerializeField] private Button[] katanaEquipButtons;
     [SerializeField] private Button[] katanaBuyButtons;
 
-    [SerializeField] private bool[] msOwned;
-    [SerializeField] private int msEquipped;
+    [SerializeField] private Button[] towerBuyButtons;
 
     [SerializeField] private bool[] archerTowerLevelOwned;
+    [SerializeField] private GameObject towerRoot;
 
     private void Awake()
     {
@@ -30,6 +29,7 @@ public class EquipmentManager : MonoBehaviour
         {
             equipKatana(3);
         });
+
         katanaBuyButtons[0].onClick.AddListener(() =>
         {
             buyKatana(0, 0);
@@ -42,37 +42,50 @@ public class EquipmentManager : MonoBehaviour
         {
             buyKatana(2, 900);
         });
+
+        towerBuyButtons[0].onClick.AddListener(() =>
+        {
+            buyTower(0, 0);
+        });
+        towerBuyButtons[1].onClick.AddListener(() =>
+        {
+            buyTower(1, 300);
+        });
+        towerBuyButtons[2].onClick.AddListener(() =>
+        {
+            buyTower(2, 900);
+        });
     }
 
     public void buyKatana(int katanaId, int amount)
     {
-        if (katanasOwned[katanaId] == false && amount < money)
+        if (katanasOwned[katanaId] == false && amount < currencyController.GetBalance())
         {
-            money -= amount;
+            currencyController.AddBalance(-amount);
             katanasOwned[katanaId] = true;
             katanaEquipButtons[katanaId].interactable = true;
             katanaBuyButtons[katanaId].interactable = false;
         }
     }
 
-    public void equipKatana(int katanaId)
+    private void buyTower(int towerId, int cost)
     {
-        catAttack.currentWeaponLevel = katanaId;
-    }
-
-    public void buyMs(int id, int amount)
-    {
-        if (msOwned[id] == false && amount < money)
+        if (archerTowerLevelOwned[towerId] == false && cost < currencyController.GetBalance())
         {
-            money -= amount;
-            katanasOwned[id] = true;
-            katanaEquipButtons[id].interactable = true;
-            katanaBuyButtons[id].interactable = false;
+            Debug.Log("Upgrading towers");
+            currencyController.AddBalance(-cost);
+            archerTowerLevelOwned[towerId] = true;
+            towerBuyButtons[towerId].interactable = false;
+            foreach (ArcherTower tower in towerRoot.GetComponentsInChildren(typeof(ArcherTower)))
+            {
+                Debug.Log("Upgrading tower...");
+                tower.upgradeArcherTower();
+            }
         }
     }
 
-    public void equipMs(int id)
+    public void equipKatana(int katanaId)
     {
-        catAttack.currentWeaponLevel = id;
+        catAttack.currentWeaponLevel = katanaId;
     }
 }

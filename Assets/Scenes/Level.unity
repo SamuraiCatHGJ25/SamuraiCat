@@ -219,6 +219,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   inShop: 0
   userInterface: {fileID: 0}
+  shopId: 0
 --- !u!65 &55131991
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5556,10 +5557,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fd8e4df0cadba478a26678ae3f09f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: 1500
   katanasOwned: 010000
   katanaEquipped: 0
   catAttack: {fileID: 649731803}
+  currencyController: {fileID: 649731804}
   katanaEquipButtons:
   - {fileID: 457884316}
   - {fileID: 162389481}
@@ -5816,6 +5817,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   inShop: 0
   userInterface: {fileID: 0}
+  shopId: 0
 --- !u!65 &693299182
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6907,6 +6909,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   inShop: 0
   userInterface: {fileID: 0}
+  shopId: 0
 --- !u!65 &817166092
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7413,6 +7416,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   inShop: 0
   userInterface: {fileID: 0}
+  shopId: 0
 --- !u!65 &882009084
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7470,11 +7474,14 @@ MonoBehaviour:
   targetTransform: {fileID: 649731802}
   smoothness: 12
   offset: {x: 0, y: 30, z: -33}
-  cameraComponent: {fileID: 0}
+  cameraComponent: {fileID: 886761756}
   currentShopValue: 0
-  cameraShopTransforms: []
+  cameraShopTransforms:
+  - {fileID: 0}
+  - {fileID: 1056740802}
+  - {fileID: 356303057}
   shopFieldOfVision: 60
-  shopTransitionSmoothness: 1
+  shopTransitionSmoothness: 3
 --- !u!114 &886761754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7616,6 +7623,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   inShop: 0
   userInterface: {fileID: 0}
+  shopId: 0
 --- !u!65 &907579391
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8110,6 +8118,7 @@ MonoBehaviour:
   movement: {fileID: 886761753}
   inShop: 0
   userInterface: {fileID: 39284035}
+  shopId: 2
 --- !u!1 &1017690219 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3241651482816719452, guid: 00fad1324a4affa409f01ff3d27edad5, type: 3}
@@ -13618,6 +13627,7 @@ MonoBehaviour:
   movement: {fileID: 886761753}
   inShop: 0
   userInterface: {fileID: 1113661544}
+  shopId: 1
 --- !u!4 &1421165299 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5222336144801055359, guid: 911f047eb8b0c0748855c48cd31fd876, type: 3}
@@ -13908,6 +13918,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   inShop: 0
   userInterface: {fileID: 0}
+  shopId: 0
 --- !u!65 &1507321370
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15373,6 +15384,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   inShop: 0
   userInterface: {fileID: 0}
+  shopId: 0
 --- !u!65 &1711127238
 BoxCollider:
   m_ObjectHideFlags: 0
