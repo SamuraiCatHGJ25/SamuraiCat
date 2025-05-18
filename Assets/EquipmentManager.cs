@@ -98,7 +98,7 @@ public class EquipmentManager : MonoBehaviour
             magicOwned[magicId] = true;
             magicBuyButtons[magicId].interactable = false;
             
-            // TODO: Add Magic Skill
+            spellController.unlockSpell(magicId + 1);
         }
     }
 

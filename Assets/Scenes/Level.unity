@@ -6215,10 +6215,13 @@ MonoBehaviour:
   castPoint: {fileID: 0}
   availableSpells:
   - {fileID: 11400000, guid: df4f4bf8e6f0cd68c9cb9fc792987650, type: 2}
+  - {fileID: 11400000, guid: 40375c53e7bd37d33ac7872e843b4465, type: 2}
+  - {fileID: 11400000, guid: 2bf1b5d80e5522b9e9c92eb0f6b16db1, type: 2}
   currentSpellIndex: 0
   currentMana: 100
   maxMana: 100
   manaRegenRate: 5
+  spellUnlocked: 010000
 --- !u!114 &649731808
 MonoBehaviour:
   m_ObjectHideFlags: 0
