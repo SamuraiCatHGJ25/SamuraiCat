@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CatAttack : MonoBehaviour
 {
-    [SerializeField] private int currentWeaponLevel;
+    [SerializeField] public int currentWeaponLevel;
 
     [SerializeField] private int[] attackDamage;
     [SerializeField] private float[] attackRange;
@@ -20,7 +20,7 @@ public class CatAttack : MonoBehaviour
 
     private void Start()
     {
-        lastSwordValue = 1;
+        lastSwordValue = -1;
     }
     private void Update()
     {
