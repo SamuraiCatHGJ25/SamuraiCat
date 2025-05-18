@@ -14,7 +14,7 @@ public class SpellCaster : MonoBehaviour
     public float currentMana = 100f;
     [SerializeField] public float maxMana = 100f;
     [SerializeField] public float manaRegenRate = 5f; // Mana per second
-
+    [SerializeField] public Boolean[] spellUnlocked; // are spells unlocked yet?
     private Dictionary<SpellData, float> spellCooldowns = new Dictionary<SpellData, float>();
     private Image manaBar;
     private Boolean castDelayed = false;
@@ -65,9 +65,9 @@ public class SpellCaster : MonoBehaviour
             UpdateManaBar(manaBar);
         }
         
-        if (Input.GetKeyDown(KeyCode.Alpha1) && availableSpells.Count > 0) currentSpellIndex = 0;
-        if (Input.GetKeyDown(KeyCode.Alpha2) && availableSpells.Count > 1) currentSpellIndex = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha3) && availableSpells.Count > 2) currentSpellIndex = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha1) && spellUnlocked[0].Equals(true)) currentSpellIndex = 0;
+        if (Input.GetKeyDown(KeyCode.Alpha2) && spellUnlocked[1].Equals(true)) currentSpellIndex = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha3) && spellUnlocked[2].Equals(true)) currentSpellIndex = 2;
 
         for (int i = 0; i < availableSpells.Count; i++)
         {
@@ -254,5 +254,23 @@ public class SpellCaster : MonoBehaviour
     public void UpdateManaBar(Image bar)
     {
         bar.fillAmount = currentMana / (float)maxMana;
+    }
+
+    public void unlockSpell(int spellId)
+    {
+        if (spellId == 1)
+        {
+            spellUnlocked.SetValue(true, 0);
+        }
+
+        if (spellId == 2)
+        {
+            spellUnlocked.SetValue(true, 1);
+        }
+
+        if (spellId == 3)
+        {
+            spellUnlocked.SetValue(true, 2);
+        }
     }
 }
