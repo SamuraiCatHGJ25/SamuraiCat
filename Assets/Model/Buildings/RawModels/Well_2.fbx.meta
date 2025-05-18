@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 38842e60913352047b81484ee5e41459
+guid: 9fed00d1e9dc22646a234ac321571222
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -8,27 +8,32 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Metal
-    second: {fileID: 2100000, guid: 858fc32880bb7df4aac97103e7bb9c66, type: 2}
+    second: {fileID: 2100000, guid: 29b99ccdb4ba8d24a851c7a2e750a61f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Rock_light
-    second: {fileID: 2100000, guid: 4e825c408cbb8354c82188c9d45b4a5c, type: 2}
+    second: {fileID: 2100000, guid: 5c74b5c60dfc6c14aa13195693f14152, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood_dark
-    second: {fileID: 2100000, guid: f70277b845a423c4bb4f1956fa648953, type: 2}
+    second: {fileID: 2100000, guid: 60670326def385c488126ae6f01d78a1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood_light
-    second: {fileID: 2100000, guid: c8842200fd65df04097a79fc4082372e, type: 2}
+    second: {fileID: 2100000, guid: 9a3b65fea0309ba47bb7cecc608740d1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: blue_roof
+    second: {fileID: 2100000, guid: f4f9c825e21bc54438126d4e200bf57b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: rope
-    second: {fileID: 2100000, guid: 1e93552b1fcf2b54fbea280231a99e71, type: 2}
+    second: {fileID: 2100000, guid: 4df4282be4e44c245ac191c5fcbe903c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
