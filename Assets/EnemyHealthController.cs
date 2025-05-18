@@ -13,6 +13,7 @@ public class EnemyHealthController : MonoBehaviour
 
     private void Start()
     {
+        enemyFactory = GameObject.FindWithTag("Player").GetComponent<EnemyFactory>();
         currentHealthPoints = healthPoints;
     }
 

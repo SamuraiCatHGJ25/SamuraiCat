@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,6 +10,7 @@ namespace TestingCat
     {
         [SerializeField] private GameObject baseEnemy;
         [SerializeField] private GameObject archerEnemy;
+        [SerializeField] private TextMeshProUGUI waveText; 
 
         private int Wave = 0;
 
@@ -35,7 +37,7 @@ namespace TestingCat
         {
             Wave++;
 
-            for (int i = 0; i < Wave * 5; i++)
+            for (int i = 0; i < Wave * 10 + 19; i++)
             {
                 SpawnEnemy();
             }
@@ -56,6 +58,10 @@ namespace TestingCat
                 g.layer = LayerMask.NameToLayer("Enemy");
                 g.SetActive(true);
             }
+        }
+        private void Update()
+        {
+            waveText.text = "Wave: " + Wave;
         }
     }
 }

@@ -6972,7 +6972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseEnemy: {fileID: 1618549351}
-  archerEnemy: {fileID: 0}
+  archerEnemy: {fileID: 1415643396}
 --- !u!114 &649731807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6985,7 +6985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b683fd4ab8b6c58b83910120e7963c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castPoint: {fileID: 0}
+  castPoint: {fileID: 1697563495}
   availableSpells:
   - {fileID: 11400000, guid: df4f4bf8e6f0cd68c9cb9fc792987650, type: 2}
   - {fileID: 11400000, guid: 40375c53e7bd37d33ac7872e843b4465, type: 2}
@@ -10609,7 +10609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895772c1b54b5a910847374f578db24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 649731795}
   nonPlayerCharacter: {fileID: 1017690219}
   GameOverCanvas: {fileID: 1991247000}
   maxHealth: 1000
@@ -14258,6 +14258,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4be70f4ee5a4cf344b8b8260cdb025be, type: 3}
+--- !u!1 &1415643396 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7457785435131000738, guid: 20aa03822beabb145b2b6cba7cbf2543, type: 3}
+  m_PrefabInstance: {fileID: 49965829}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1421165295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14769,7 +14774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895772c1b54b5a910847374f578db24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 649731795}
   nonPlayerCharacter: {fileID: 341207842}
   GameOverCanvas: {fileID: 1991247000}
   maxHealth: 1000
@@ -18533,7 +18538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895772c1b54b5a910847374f578db24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 649731795}
   nonPlayerCharacter: {fileID: 1646570820}
   GameOverCanvas: {fileID: 1991247000}
   maxHealth: 1000
@@ -20582,7 +20587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895772c1b54b5a910847374f578db24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 649731795}
   nonPlayerCharacter: {fileID: 2057079991}
   GameOverCanvas: {fileID: 1991247000}
   maxHealth: 1000
