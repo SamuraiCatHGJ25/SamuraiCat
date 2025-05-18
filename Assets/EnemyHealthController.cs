@@ -1,9 +1,11 @@
+using TestingCat;
 using UnityEditor.Rendering;
 using UnityEngine;
 
 public class EnemyHealthController : MonoBehaviour
 {
     [SerializeField] private CurrencyController currencyController;
+    [SerializeField] private EnemyFactory enemyFactory;
     [SerializeField] private int healthPoints;
     private int currentHealthPoints;
     [SerializeField] private ParticleSystem deathEffect;
@@ -22,6 +24,11 @@ public class EnemyHealthController : MonoBehaviour
         {
             // TODO: Implement variable balance based on enemy type
             currencyController.AddBalance(1);
+
+            if (enemyFactory.IsWaveCleared())
+            {
+                enemyFactory.SpawnWave();
+            }
 
             deathEffect.Play();
             Destroy(gameObject, timeBeforeDespawn);

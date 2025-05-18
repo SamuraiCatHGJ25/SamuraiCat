@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,13 +11,26 @@ namespace TestingCat
 
         private int Wave = 0;
 
+        private List<GameObject> enemies;
+
         private void Start()
         {
-            CancelInvoke(nameof(Wave));
-            InvokeRepeating(nameof(SpawnEnemies), 30f, 30f);
+            SpawnWave();
+            enemies = new List<GameObject>();
         }
 
-        private void SpawnEnemies()
+        public bool IsWaveCleared()
+        {
+            return !enemies.TrueForAll(s => s);
+        }
+
+        public void SpawnWave()
+        {
+            CancelInvoke(nameof(SpawnWaveInternal));
+            Invoke("SpawnWaveInternal", 30f);
+        }
+
+        private void SpawnWaveInternal()
         {
             Wave++;
 
@@ -32,6 +46,7 @@ namespace TestingCat
             GameObject[] go = await InstantiateAsync(baseEnemy, pos, Quaternion.identity);
             foreach (var g in go)
             {
+                enemies.Add(g);
                 g.layer = LayerMask.NameToLayer("Enemy");
                 g.SetActive(true);
             }
