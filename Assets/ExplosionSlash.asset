@@ -15,9 +15,10 @@ MonoBehaviour:
   spellName: Explosion Slash
   icon: {fileID: 21300000, guid: 40c3b95e1df8141418f11fc33ebc63ff, type: 3}
   spellType: 1
-  cooldown: 1
-  manaCost: 1
-  damage: 20
+  cooldown: 5
+  manaCost: 25
+  damage: 50
+  castingDelay: 0
   projectilePrefab: {fileID: 0}
   projectileSpeed: 20
   projectileLifetime: 3
