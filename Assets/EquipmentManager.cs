@@ -15,7 +15,6 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] private Button[] katanaEquipButtons;
     [SerializeField] private Button[] katanaBuyButtons;
     
-    [SerializeField] private Button[] magicEquipButtons;
     [SerializeField] private Button[] magicBuyButtons;
 
     [SerializeField] private Button[] towerBuyButtons;
@@ -42,6 +41,15 @@ public class EquipmentManager : MonoBehaviour
             katanaBuyButtons[i].onClick.AddListener(() =>
             { 
                 buyKatana(offset, katanaPriceConfig[offset]);
+            });
+        }
+
+        for (var i = 0; i < magicBuyButtons.Length; i++)
+        {
+            var offset = i;
+            magicBuyButtons[i].onClick.AddListener(() =>
+            { 
+                buyMagic(offset, magicPriceConfig[offset]);
             });
         }
 
@@ -84,18 +92,14 @@ public class EquipmentManager : MonoBehaviour
 
     public void buyMagic(int magicId, int price)
     {
-        if (katanasOwned[magicId] == false && price < currencyController.GetBalance())
+        if (magicOwned[magicId] == false && price < currencyController.GetBalance())
         {
             currencyController.AddBalance(-price);
-            katanasOwned[magicId] = true;
-            katanaEquipButtons[magicId].interactable = true;
-            katanaBuyButtons[magicId].interactable = false;
+            magicOwned[magicId] = true;
+            magicBuyButtons[magicId].interactable = false;
+            
+            // TODO: Add Magic Skill
         }
-    }
-
-    private void equipMagic(int magicId)
-    {
-        
     }
 
     public void equipKatana(int katanaId)
