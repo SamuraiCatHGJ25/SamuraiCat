@@ -2843,7 +2843,7 @@ Transform:
   m_GameObject: {fileID: 294754755}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 1, z: -4}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8664,8 +8664,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 886761757}
   targetTransform: {fileID: 649731802}
-  smoothness: 1
-  offset: {x: 0, y: 33.61102, z: -40}
+  smoothness: 12
+  offset: {x: 0, y: 30, z: -33}
 --- !u!114 &886761754
 MonoBehaviour:
   m_ObjectHideFlags: 0
