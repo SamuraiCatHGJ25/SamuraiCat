@@ -19,6 +19,9 @@ public class SpellCaster : MonoBehaviour
     private Image manaBar;
     private Boolean castDelayed = false;
     
+    
+    // Abilities
+    
     IEnumerator delayCast(float delay)
     {
         castDelayed = true;
@@ -31,6 +34,14 @@ public class SpellCaster : MonoBehaviour
     
     void Start()
     {
+        
+        
+        
+        
+        
+        
+        
+        
         if (castPoint == null)
         {
             castPoint = transform; // Default to caster's position if not set
