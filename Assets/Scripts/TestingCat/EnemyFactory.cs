@@ -8,6 +8,7 @@ namespace TestingCat
     public class EnemyFactory : MonoBehaviour
     {
         [SerializeField] private GameObject baseEnemy;
+        [SerializeField] private GameObject archerEnemy;
 
         private int Wave = 0;
 
@@ -15,7 +16,7 @@ namespace TestingCat
 
         private void Start()
         {
-            SpawnWave();
+            SpawnWaveInternal();
             enemies = new List<GameObject>();
         }
 
@@ -42,8 +43,13 @@ namespace TestingCat
 
         private async void SpawnEnemy()
         {
+            var enemy = baseEnemy;
+            if (Random.Range(0, 2) == 1)
+            {
+                enemy = archerEnemy;
+            }
             Vector3 pos = new Vector3(Random.Range(-35f, 35f), 2, Random.Range(-35f, 35f));
-            GameObject[] go = await InstantiateAsync(baseEnemy, pos, Quaternion.identity);
+            GameObject[] go = await InstantiateAsync(enemy, pos, Quaternion.identity);
             foreach (var g in go)
             {
                 enemies.Add(g);
