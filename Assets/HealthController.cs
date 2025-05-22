@@ -66,6 +66,16 @@ public class HealthController : MonoBehaviour
      }
     }
 
+    public void FullHeal()
+    {
+        curHealth = maxHealth;
+
+        if (player != null)
+        {
+            UpdateHealthBar(healthBar);
+        }
+    }
+
     public void heal(int heal)
     {
         curHealth += heal;

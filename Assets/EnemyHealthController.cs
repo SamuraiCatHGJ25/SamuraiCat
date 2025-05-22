@@ -24,7 +24,7 @@ public class EnemyHealthController : MonoBehaviour
         if(currentHealthPoints <= 0)
         {
             // TODO: Implement variable balance based on enemy type
-            currencyController.AddBalance(1);
+            currencyController.AddBalance(10);
 
             if (enemyFactory.IsWaveCleared())
             {

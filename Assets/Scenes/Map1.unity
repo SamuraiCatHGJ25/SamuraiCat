@@ -7510,7 +7510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faaa01da8a084cd6978f06a05bee678b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  balance: 0
+  balance: 5000
   text: {fileID: 1148442628}
 --- !u!114 &649731805
 MonoBehaviour:
@@ -7548,6 +7548,8 @@ MonoBehaviour:
   baseEnemy: {fileID: 1618549351}
   archerEnemy: {fileID: 1415643396}
   waveText: {fileID: 1504041600}
+  playerHealth: {fileID: 649731805}
+  towerRoot: {fileID: 130475862}
 --- !u!114 &649731807
 MonoBehaviour:
   m_ObjectHideFlags: 0

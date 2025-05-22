@@ -10,7 +10,7 @@ public class CurrencyController : MonoBehaviour
 
     public void AddBalance(int amount)
     {
-        balance += amount * 10;
+        balance += amount;
         text.text = "Yen: " + balance;
     }
 }

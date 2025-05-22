@@ -11,6 +11,8 @@ namespace TestingCat
         [SerializeField] private GameObject baseEnemy;
         [SerializeField] private GameObject archerEnemy;
         [SerializeField] private TextMeshProUGUI waveText; 
+        [SerializeField] private HealthController playerHealth;
+        [SerializeField] private GameObject towerRoot;
 
         private int Wave = 0;
 
@@ -29,6 +31,13 @@ namespace TestingCat
 
         public void SpawnWave()
         {
+            playerHealth.FullHeal();
+
+            foreach (HealthController tower in towerRoot.GetComponentsInChildren(typeof(HealthController)))
+            {
+                tower.FullHeal();
+            }
+
             CancelInvoke(nameof(SpawnWaveInternal));
             Invoke("SpawnWaveInternal", 30f);
         }
@@ -37,7 +46,7 @@ namespace TestingCat
         {
             Wave++;
 
-            for (int i = 0; i < Wave * 10 + 19; i++)
+            for (int i = 0; i < Wave * 5; i++)
             {
                 SpawnEnemy();
             }
